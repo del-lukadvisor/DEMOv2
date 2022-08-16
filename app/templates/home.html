@@ -1,0 +1,22 @@
+<!-- This is a Jinja2 Template that extends layout.html
+Implements a simple Bootstrap 5 form submission interface for YOLOv5 detection.
+-->
+
+{% extends "layout.html" %}
+
+{% block title %} <title>DEMO</title> {% endblock %}
+
+{% block content %}
+<div class="m-2">
+  <h5 style="font-size: 20px; margin-top: 25px; margin-bottom: 30px; text-align: center;">Product and Pop Shelf Detection</h5>
+
+  <form style="margin-left:10px; margin-right:10px;" method="post" action="" enctype="multipart/form-data">
+    <div style="display: flex; flex-direction: column; justify-content: center;" class="my-2">
+      <label for="file_list" class="form-label">Upload Images</label>
+      <input style="margin-bottom:5px;" class="form-control w-auto" type="file" name="file_list" id="file_list" multiple>
+    </div>
+    <button style="background-color: #00A89B;" class="btn btn-primary" type="submit"><b>Submit</b></button>
+  </form>
+</div>
+
+{% endblock %}

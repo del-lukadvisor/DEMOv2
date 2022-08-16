@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<!--Create button that calls the download() function above, use dummy iframe
+to stop the form from redirecting -->
+<div>
+  <h5 style="margin-left: 10px; font-size: 25px; margin-top: 20px; margin-bottom: 30px; text-align: center;">Results</h5>
+</div>
+
+<div style="margin-left:15px; margin-right:10px; display:flex; flex-direction:column; font-size: 18px;">
+  {% for i in img_str_list %}
+  <p>{{pop}} pop advertisement and {{products}} products found.</h3>
+  {% if y==0 %}
+    <p>Pops and Products are correctly placed</h3>
+  {% else %}
+    <p>{{y}} pop is placed incorrectly, please check row {{position}}</h3>
+  {% endif %}
+
+  <!--Display base64 encoded image, scale image so it fits browser window horizontally -->
+  <img style="display:flex; flex-direction:column; margin-top: 10px; height: 30%; width: 30%; justify-content: center;" src="data:image/jpeg;charset=utf-8;base64,{{ i }}" id="result_image" />
+
+  <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+  <div style="display: flex; flex-direction: row; margin-bottom: 10px;">
+    <form onsubmit="download('image_results', '{{ i }}')" target="dummyframe">
+        <input style="background-color: #00A89B; width:150px; margin-right: 15px;" class="btn btn-primary" type="submit" value="Download Results">
+    </form>
+    <form>
+        <button style="background-color: #00A89B; width:150px;" class="btn btn-primary" onclick="history.back()">Go Back</button>
+    </form>
+  </div>
+
+  <hr/>
+</div>
+{% endfor %}
+
+<script>
+  // from https://stackoverflow.com/questions/3665115/how-to-create-a-file-in-memory-for-user-to-download-but-not-through-server/18197341#18197341
+  function download(filename, text) {
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:image/jpeg;charset=utf-8;base64,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+  }
+</script>
+
+{% endblock %}
