@@ -16,6 +16,10 @@ templates = Jinja2Templates(directory = 'templates')
 
 colors = [tuple([random.randint(0, 255) for _ in range(3)]) for _ in range(100)] #for bbox plotting
 
+model = torch.hub.load("WongKinYiu/yolov7", "custom", "./best.pt", source="github", force_reload=True)
+model.conf = 0.5
+model.agnostic = False
+
 ##############################################
 #-------------GET Request Routes--------------
 ##############################################
@@ -34,10 +38,6 @@ def home(request: Request):
 @app.post("/")
 def detect_with_server_side_rendering(request: Request,
                         file_list: List[UploadFile] = File(...)):
-
-    model = torch.hub.load("WongKinYiu/yolov7", "custom", "./best.pt", source="github", force_reload=True)
-    model.conf = 0.5
-    model.agnostic = False
 
     img_batch = [cv2.imdecode(np.fromstring(file.file.read(), np.uint8), cv2.IMREAD_COLOR)
                     for file in file_list]
@@ -148,8 +148,8 @@ if __name__ == '__main__':
     import uvicorn
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('--host', default = 'localhost')
-    parser.add_argument('--port', default = 8000)
+    parser.add_argument('--host', default = '0.0.0.0')
+    parser.add_argument('--port', default = 8080)
     opt = parser.parse_args()
     
     app_str = 'server:app' #make the app string equal to whatever the name of this file is
